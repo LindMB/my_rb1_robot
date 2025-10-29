@@ -1,0 +1,256 @@
+<?xml version="1.0"?>
+
+<robot name="rb1_robot">
+
+    <!-- Define materials for visualization -->
+    <material name="blue">
+        <color rgba="0 0 1 1"/>
+    </material>
+
+    <material name="gray">
+        <color rgba="0.40 0.40 0.40 1"/>
+    </material>
+
+    <material name="red">
+        <color rgba="1 0 0 1"/>
+    </material>
+
+    <!-- Base footprint link -->
+    <link name="base_footprint">
+    </link>
+
+    <!-- Joint connecting base_link and base_footprint -->
+    <!-- TO DO: Set correct joint type -->
+    <joint name="base_link_plate_joint" type="fixed">
+        <!-- TO DO: Define axis (if needed) -->
+        <!-- Not needed -->
+        <!-- TO DO: Define origin -->
+        <origin rpy="0 0 0" xyz="0 0 0.15" /> 
+        <!-- TO DO: Define parent -->
+        <parent link="base_footprint" />
+        <!-- TO DO: Define child -->
+        <child link="base_link" />
+    </joint>
+
+    <!-- Base link -->
+    <link name="base_link">
+        <!-- TO DO: Add inertial tag -->
+        <inertial>
+            <mass value="20.5" />
+            <origin xyz="0 0 0" rpy="0 0 0" />
+            <inertia ixx="0.4740625" ixy="0" ixz="0" iyy="0.4740625" iyz="0" izz="0.640625" />
+        </inertial>
+        <!-- TO DO: Add collision tag -->
+        <collision>
+            <geometry>
+                <cylinder length="0.3" radius="0.25" />
+            </geometry>
+        </collision>
+        <!-- TO DO: Add visual tag -->
+        <visual>
+            <geometry>
+                <cylinder length="0.3" radius="0.25" />
+            </geometry>
+            <material name="blue">
+                <color rgba="0 0 1 1"/>
+            </material>
+        </visual> 
+    </link>
+
+    <!-- Left wheel link -->
+    <link name="left_wheel">
+        <!-- TO DO: Add inertial tag -->
+        <inertial>
+            <mass value="1" />
+            <origin xyz="0 0 0" rpy="0 0 0" />
+            <inertia ixx="0.0003645833333" ixy="0" ixz="0" iyy="0.0003645833333" iyz="0" izz="0.0003125" />
+        </inertial>
+        <!-- TO DO: Add collision tag -->
+        <collision>
+            <origin rpy="1.5707 0 0" xyz="0 0 0" />
+            <geometry>
+                <cylinder length="0.05" radius="0.025" />
+            </geometry>
+        </collision>
+        <!-- TO DO: Add visual tag -->
+        <visual>
+            <origin rpy="1.5707 0 0" xyz="0 0 0" />
+            <geometry>
+                <cylinder length="0.05" radius="0.025" />
+            </geometry>
+            <material name="red">
+                <color rgba="1 0 0 1"/>
+            </material>
+        </visual>
+    </link>
+
+    <!-- Joint connecting base_link and left_wheel -->
+    <!-- TO DO: Set correct joint type -->
+    <joint name="base_link_left_wheel_joint" type="continuous">
+        <!-- TO DO: Define axis (if needed) -->
+        <axis rpy="0 0 0" xyz="0 1 0" />
+        <!-- TO DO: Define origin -->
+        <origin rpy="0 0 0" xyz="0 0.2 -0.15" />
+        <!-- TO DO: Define parent -->
+        <parent link="base_link" />
+        <!-- TO DO: Define child -->
+        <child link="left_wheel" />
+        <limit effort="10000" velocity="1000" />
+        <joint_properties damping="1.0" friction="1.0" />
+    </joint>
+
+    <!-- Right wheel link -->
+    <link name="right_wheel">
+        <!-- TO DO: Add inertial tag -->
+        <inertial>
+            <mass value="1" />
+            <origin xyz="0 0 0" rpy="0 0 0" />
+            <inertia ixx="0.0003645833333" ixy="0" ixz="0" iyy="0.0003645833333" iyz="0" izz="0.0003125" />
+        </inertial>
+        <!-- TO DO: Add collision tag -->
+        <collision>
+            <origin rpy="1.5707 0 0" xyz="0 0 0" />
+            <geometry>
+                <cylinder length="0.05" radius="0.025" />
+            </geometry>
+        </collision>
+        <!-- TO DO: Add visual tag -->
+        <visual>
+            <origin rpy="1.5707 0 0" xyz="0 0 0" />
+            <geometry>
+                <cylinder length="0.05" radius="0.025" />
+            </geometry>
+            <material name="red">
+                <color rgba="1 0 0 1"/>
+            </material>
+        </visual> 
+    </link>
+
+    <!-- Joint connecting base_link and right_wheel -->
+    <!-- TO DO: Set correct joint type -->
+    <joint name="base_link_right_wheel_joint" type="continuous">
+        <!-- TO DO: Define axis (if needed) -->
+        <axis rpy="0 0 0" xyz="0 1 0" />
+        <!-- TO DO: Define origin -->
+        <origin rpy="0 0 0" xyz="0 -0.2 -0.15" />
+        <!-- TO DO: Define parent -->
+        <parent link="base_link" />
+        <!-- TO DO: Define child -->
+        <child link="right_wheel" />
+        <limit effort="10000" velocity="1000" />
+        <joint_properties damping="1.0" friction="1.0" />
+    </joint>
+
+    <!-- Front caster -->
+    <link name="front_caster">
+        <!-- TO DO: Add inertial tag -->
+        <inertial>
+            <mass value="1" />
+            <origin xyz="0 0 0" rpy="0 0 0" />
+            <inertia ixx="0.0003125" ixy="0" ixz="0" iyy="0.0003125" iyz="0" izz="0.0003125" />
+        </inertial>
+        <!-- TO DO: Add collision tag -->
+        <collision>
+            <origin rpy="0 0 0" xyz="0 0 0" />
+            <geometry>
+                <sphere radius="0.025" />
+            </geometry>
+        </collision>
+        <!-- TO DO: Add visual tag -->
+        <visual>
+            <origin rpy="0 0 0" xyz="0 0 0" />
+            <geometry>
+                <sphere radius="0.025" />
+            </geometry>
+            <material name="gray">
+                <color rgba="0.40 0.40 0.40 1"/>
+            </material>
+        </visual> 
+    </link>
+
+    <!-- Joint connecting base_link and front_caster -->
+    <!-- TO DO: Set correct joint type -->
+    <joint name="base_link_front_caster_joint" type="fixed">
+        <!-- TO DO: Define axis (if needed) -->
+        <!-- Not needed -->
+        <!-- TO DO: Define origin -->
+        <origin rpy="0 0 0" xyz="0.1 0 -0.15" />
+        <!-- TO DO: Define parent -->
+        <parent link="base_link" />
+        <!-- TO DO: Define child -->
+        <child link="front_caster" />
+        <joint_properties damping="1.0" friction="0.0" />
+    </joint>
+
+    <!-- Back caster -->
+    <link name="back_caster">
+        <!-- TO DO: Add inertial tag -->
+        <inertial>
+            <mass value="1" />
+            <origin xyz="0 0 0" rpy="0 0 0" />
+            <inertia ixx="0.0003125" ixy="0" ixz="0" iyy="0.0003125" iyz="0" izz="0.0003125" />
+        </inertial>
+        <!-- TO DO: Add collision tag -->
+        <collision>
+            <origin rpy="0 0 0" xyz="0 0 0" />
+            <geometry>
+                <sphere radius="0.025" />
+            </geometry>
+        </collision>
+        <!-- TO DO: Add visual tag -->
+        <visual>
+            <origin rpy="0 0 0" xyz="0 0 0" />
+            <geometry>
+                <sphere radius="0.025" />
+            </geometry>
+            <material name="gray">
+                <color rgba="0.40 0.40 0.40 1"/>
+            </material>
+        </visual> 
+    </link>
+
+    <!-- Joint connecting base_link and back_caster -->
+    <!-- TO DO: Set correct joint type -->
+    <joint name="base_link_back_caster_joint" type="fixed">
+        <!-- TO DO: Define axis (if needed) -->
+        <!-- Not needed -->
+        <!-- TO DO: Define origin -->
+        <origin rpy="0 0 0" xyz="-0.1 0 -0.15"/>
+        <!-- TO DO: Define parent -->
+        <parent link="base_link" />
+        <!-- TO DO: Define child -->
+        <child link="back_caster" />
+        <joint_properties damping="1.0" friction="0.0" />
+    </joint>
+
+    <!-- Link representing the front laser scanner -->
+    <!--For this robot, the laser is not visible, so we won't define a body for it. -->
+    <link name="front_laser">
+        <inertial>
+            <mass value="0.5" />
+            <origin rpy="0 0 0" xyz="0 0 0" />
+            <inertia ixx="0" ixy="0" ixz="0" iyy="0" iyz="0" izz="0" />
+        </inertial>
+        <collision>
+            <origin rpy="3.1414 0 0" xyz="0 0 0" /> <!-- Rotation of 180 deg in the x axis-->
+            <geometry>
+                <cylinder length="0.20" radius="0.15" />
+            </geometry>
+        </collision>
+    </link>
+
+    <!-- Joint connecting base_link and front_laser -->
+    <!-- TO DO: Set correct joint type -->
+    <joint name="base_link_front_laser_joint" type="fixed">
+        <!-- TO DO: Define axis (if needed) -->
+        <!-- Not needed -->
+        <!-- TO DO: Define origin -->
+        <origin rpy="0 0 0" xyz="0.25 0 0.075" />
+        <!-- TO DO: Define parent -->
+        <parent link="base_link" />
+        <!-- TO DO: Define child -->
+        <child link="front_laser" />
+        <joint_properties damping="1.0" friction="1.0" />
+    </joint>
+
+</robot>
