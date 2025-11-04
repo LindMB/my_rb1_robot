@@ -335,7 +335,7 @@
             <inertia ixx="0.0044791666667" ixy="0" ixz="0" iyy="0.0044791666667" iyz="0" izz="0.005625" />
         </inertial>
         <collision>
-            <origin rpy="3.1414 0 0" xyz="0 0 0" /> <!-- Rotation of 180 deg in the x axis-->
+            <origin rpy="0 0 0" xyz="0 0 0" />
             <geometry>
                 <cylinder length="0.20" radius="0.15" />
             </geometry>
@@ -348,7 +348,7 @@
         <!-- TO DO: Define axis (if needed) -->
         <!-- Not needed -->
         <!-- TO DO: Define origin -->
-        <origin rpy="0 0 0" xyz="0.25 0 0.075" />
+        <origin rpy="3.1414 0 0" xyz="0.25 0 0.075" /> <!-- Rotation of 180 deg in the x axis-->
         <!-- TO DO: Define parent -->
         <parent link="base_link" />
         <!-- TO DO: Define child -->
