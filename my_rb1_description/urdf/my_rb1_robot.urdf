@@ -2,88 +2,11 @@
 
 <robot name="rb1_robot">
 
-    <!-- Specify Gazebo color for the base_link -->
-    <gazebo reference="base_link">
-        <visual>
-            <material> <!-- Black -->
-                <!-- TODO: Define parameters for a black chassis -->
-                <ambient>0.0 0.0 0.0 1.0</ambient>
-                <diffuse>0.0 0.0 0.0 1.0</diffuse>
-                <specular>0.0 0.0 0.0 1.0</specular>
-                <emissive>0.0 0.0 0.0 1.0</emissive>
-            </material>
-        </visual>
-    </gazebo>
-
-    <!-- Gazebo friction and material properties for left_wheel -->
-    <gazebo reference="left_wheel">
-        <collision>
-            <surface>
-                <friction>
-                    <ode>
-                        <!-- TODO: Define mu (first friction coefficient) -->
-                        <mu>0.1</mu>
-                        <!-- TODO: Define mu2 (second friction coefficient) -->
-                        <mu2>0.1</mu2>
-                    </ode>
-                </friction>
-            </surface>
-        </collision>
-    </gazebo>
-
-    <!-- Gazebo friction and material properties for right_wheel -->
-    <gazebo reference="right_wheel">
-        <collision>
-            <surface>
-                <friction>
-                    <ode>
-                        <!-- TODO: Define mu (first friction coefficient) -->
-                        <mu>0.1</mu>
-                        <!-- TODO: Define mu2 (second friction coefficient) -->
-                        <mu2>0.1</mu2>
-                    </ode>
-                </friction>
-            </surface>
-        </collision>
-    </gazebo>
-
-    <!-- Gazebo friction and material properties for front_caster -->
-    <gazebo reference="front_caster">
-        <collision>
-            <surface>
-                <friction>
-                    <ode>
-                        <!-- TODO: Define mu (first friction coefficient) -->
-                        <mu>0.0</mu>
-                        <!-- TODO: Define mu2 (second friction coefficient) -->
-                        <mu2>0.0</mu2>
-                    </ode>
-                </friction>
-            </surface>
-        </collision>
-    </gazebo>
-
-    <!-- Gazebo friction and material properties for back_caster -->
-    <gazebo reference="back_caster">
-        <collision>
-            <surface>
-                <friction>
-                    <ode>
-                        <!-- TODO: Define mu (first friction coefficient) -->
-                        <mu>0.0</mu>
-                        <!-- TODO: Define mu2 (second friction coefficient) -->
-                        <mu2>0.0</mu2>
-                    </ode>
-                </friction>
-            </surface>
-        </collision>
-    </gazebo>
-    
     <!-- Define materials for visualization -->
     <material name="blue">
         <color rgba="0 0 1 1"/>
     </material>
-
+    
     <material name="gray">
         <color rgba="0.40 0.40 0.40 1"/>
     </material>
@@ -218,24 +141,6 @@
         <joint_properties damping="1.0" friction="1.0" />
     </joint>
 
-    <!-- Differential Drive Plugin -->
-    <gazebo>
-        <plugin 
-            filename="libignition-gazebo-diff-drive-system.so"
-            name="ignition::gazebo::systems::DiffDrive">
-            <left_joint>base_link_left_wheel_joint</left_joint>
-            <right_joint>base_link_right_wheel_joint</right_joint>
-            <wheel_separation>0.40</wheel_separation>
-            <wheel_radius>0.025</wheel_radius>
-            <odom_publish_frequency>20</odom_publish_frequency>
-            <topic>cmd_vel</topic>
-            <odom_topic>odom</odom_topic>
-            <tf_topic>tf</tf_topic>
-            <frame_id>odom</frame_id>
-            <child_frame_id>base_footprint</child_frame_id>
-        </plugin>
-    </gazebo>
-
     <!-- Front caster -->
     <link name="front_caster">
         <!-- TO DO: Add inertial tag -->
@@ -322,10 +227,6 @@
         <joint_properties damping="1.0" friction="0.0" />
     </joint>
 
-    <gazebo reference="base_link_back_caster_joint">
-        <preserveFixedJoint>true</preserveFixedJoint>
-    </gazebo>
-
     <!-- Link representing the front laser scanner -->
     <!--For this robot, the laser is not visible, so we won't define a body for it. -->
     <link name="front_laser">
@@ -334,12 +235,6 @@
             <origin rpy="0 0 0" xyz="0 0 0" />
             <inertia ixx="0.0044791666667" ixy="0" ixz="0" iyy="0.0044791666667" iyz="0" izz="0.005625" />
         </inertial>
-        <collision>
-            <origin rpy="0 0 0" xyz="0 0 0" />
-            <geometry>
-                <cylinder length="0.20" radius="0.15" />
-            </geometry>
-        </collision>
     </link>
 
     <!-- Joint connecting base_link and front_laser -->
@@ -356,16 +251,182 @@
         <joint_properties damping="1.0" friction="1.0" />
     </joint>
 
-    <gazebo reference="base_link_front_laser_joint">
-        <preserveFixedJoint>true</preserveFixedJoint>
+    <!-- Specify Gazebo color for the base_link -->
+
+    <!-- Gazebo Classic-->
+    <gazebo reference="base_link">
+        <material>Gazebo/Black</material>
+    </gazebo>
+    <!-- Gazebo Sim--> <!-- Material - Black -->
+    <!--gazebo reference="base_link">
+        <visual>
+            <material>
+                <ambient>0 0 0 1</ambient>
+                <diffuse>0 0 0 1</diffuse>
+                <specular>0 0 0 1</specular>
+                <emissive>0 0 0 1</emissive>
+            </material>
+        </visual>
+    </gazebo-->
+    
+    <!-- Gazebo friction and material properties for left_wheel -->
+    
+    <!-- Gazebo Classic -->
+    <gazebo reference="left_wheel">
+        <mu1 value="5.0"/>
+		<mu2 value="0.5"/>
+		<kp value="10000000.0" />
+		<kd value="1.0" />
+		<fdir1 value="1 0 0"/>
+        <material>Gazebo/Red</material>
     </gazebo>
 
-    <!-- Laser Scanner Plugin -->
+    <!-- Gazebo Sim --> <!-- Classic mu1 and mu2 -->
+    <!--gazebo reference="left_wheel">
+        <collision>
+            <surface>
+            <friction>
+                <ode>
+                <mu>5.0</mu>      
+                <mu2>0.5</mu2>
+                <fdir1>1 0 0</fdir1>
+                </ode>
+            </friction>
+            <contact>
+                <ode>
+                <kp>10000000.0</kp>
+                <kd>1.0</kd>
+                </ode>
+            </contact>
+            </surface>
+        </collision>
+
+        <visual>
+            <material>
+                <ambient>1 0 0 1</ambient>
+                <diffuse>1 0 0 1</diffuse>
+                <specular>0 0 0 1</specular>
+                <emissive>0 0 0 1</emissive>
+            </material>
+        </visual>
+    </gazebo-->
+
+    <!-- Gazebo friction and material properties for right_wheel -->
+    <gazebo reference="right_wheel">
+        <mu1 value="5.0"/>
+		<mu2 value="0.5"/>
+		<kp value="10000000.0" />
+		<kd value="1.0" />
+		<fdir1 value="1 0 0"/>
+        <material>Gazebo/Red</material>
+    </gazebo>
+
+    <!-- Gazebo friction and material properties for front_caster -->
+    <gazebo reference="front_caster">
+        <mu1 value="0.0"/>
+        <mu2 value="0.0"/>
+        <kp value="10000000.0" />
+        <kd value="100.0" />
+        <fdir1 value="0 0 1"/>
+        <material>Gazebo/Gray</material>
+    </gazebo>
+
+    <!-- Gazebo friction and material properties for back_caster -->
+    <gazebo reference="back_caster">
+        <mu1 value="0.0"/>
+        <mu2 value="0.0"/>
+        <kp value="10000000.0" />
+        <kd value="100.0" />
+        <fdir1 value="0 0 1"/>
+        <material>Gazebo/Gray</material>
+    </gazebo>
+
+    <!-- Gazebo plugin for differential drive controller -->
+
+    <!-- Differential Drive Plugin -->
+    <!-- Gazebo Classic -->
     <gazebo>
+        <plugin filename="libgazebo_ros_diff_drive.so" name="differential_drive_controller">
+            <!-- Plugin parameters -->
+            <alwaysOn>true</alwaysOn>
+            <updateRate>20</updateRate>
+            <leftJoint>base_link_left_wheel_joint</leftJoint>
+            <rightJoint>base_link_right_wheel_joint</rightJoint>
+            <publishWheelTF>true</publishWheelTF>
+            <wheelSeparation>0.4</wheelSeparation>
+            <wheelDiameter>0.05</wheelDiameter>
+            <torque>10</torque>
+            <commandTopic>cmd_vel</commandTopic>
+            <odometryTopic>odom</odometryTopic>
+            <odometryFrame>odom</odometryFrame>
+            <robotBaseFrame>base_footprint</robotBaseFrame>
+        </plugin>
+    </gazebo>
+
+    <!-- Gazebo Sim -->
+    <!-- gazebo>
+        <plugin
+            filename="libignition-gazebo-diff-drive-system.so"
+            name="ignition::gazebo::systems::DiffDrive">
+            <left_joint>base_link_left_wheel_joint</left_joint>
+            <right_joint>base_link_right_wheel_joint</right_joint>
+            <wheel_separation>0.4</wheel_separation>
+            <wheel_radius>0.025</wheel_radius>
+            <odom_publish_frequency>20</odom_publish_frequency>
+            <topic>cmd_vel</topic>
+            <odom_topic>odom</odom_topic>
+            <tf_topic>tf</tf_topic>
+            <frame_id>odom</frame_id>
+            <child_frame_id>base_footprint</child_frame_id>
+        </plugin>
+    </gazebo-->
+
+    <!-- Gazebo configuration for the front laser sensor -->
+    
+    <!-- Gazebo Classic -->
+    <gazebo reference="front_laser">
+        <!-- Define a ray sensor named "head_hokuyo_sensor" -->
+        <sensor type="ray" name="head_hokuyo_sensor">
+            <pose>0 0 0 0 0 0</pose>
+            <!-- Enable visualization of the sensor -->
+            <visualize>true</visualize>
+            <update_rate>20</update_rate>
+            <ray>
+                <!-- Configure the scanning properties -->
+                <scan>
+                    <horizontal>
+                        <samples>720</samples>
+                        <resolution>1</resolution>
+                        <min_angle>-1.570796</min_angle>
+                        <max_angle>1.570796</max_angle>
+                    </horizontal>
+                </scan>
+                <!-- Configure the range properties -->
+                <range>
+                    <min>0.05</min>
+                    <max>10.0</max>
+                    <resolution>0.01</resolution>
+                </range>
+                <!-- Configure the noise properties -->
+                <noise>
+                    <type>gaussian</type>
+                    <mean>0.0</mean>
+                    <stddev>0.01</stddev>
+                </noise>
+            </ray>
+            <!-- Attach a Gazebo plugin to the sensor for ROS integration -->
+            <plugin name="gazebo_ros_head_hokuyo_controller" filename="libgazebo_ros_laser.so">
+                <topicName>/scan</topicName>
+                <frameName>front_laser</frameName>
+            </plugin>
+        </sensor>
+    </gazebo>
+
+    <!-- Gazebo Sim --> <!-- use ogre2 if ogre v2.x is installed, otherwise use ogre -->
+    <!--gazebo>
         <plugin
         filename="libignition-gazebo-sensors-system"
         name="ignition::gazebo::systems::Sensors">
-        <!-- use ogre2 if ogre v2.x is installed, otherwise use ogre -->
         <render_engine>ogre2</render_engine>
         </plugin>
     </gazebo>
@@ -397,6 +458,6 @@
                 </noise>
             </ray>
         </sensor>
-    </gazebo>
+    </gazebo-->
 
 </robot>
