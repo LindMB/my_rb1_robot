@@ -276,7 +276,7 @@
         <mu1 value="5.0"/>
 		<mu2 value="0.5"/>
 		<kp value="10000000.0" />
-		<kd value="1.0" />
+		<kd value="10.0" />
 		<fdir1 value="1 0 0"/>
         <material>Gazebo/Red</material>
     </gazebo>
@@ -316,27 +316,27 @@
         <mu1 value="5.0"/>
 		<mu2 value="0.5"/>
 		<kp value="10000000.0" />
-		<kd value="1.0" />
+		<kd value="10.0" />
 		<fdir1 value="1 0 0"/>
         <material>Gazebo/Red</material>
     </gazebo>
 
     <!-- Gazebo friction and material properties for front_caster -->
     <gazebo reference="front_caster">
-        <mu1 value="0.0"/>
-        <mu2 value="0.0"/>
-        <kp value="10000000.0" />
-        <kd value="100.0" />
+        <mu1 value="0.02"/>
+        <mu2 value="0.02"/>
+        <kp value="500000.0" />
+        <kd value="10.0" />
         <fdir1 value="0 0 1"/>
         <material>Gazebo/Gray</material>
     </gazebo>
 
     <!-- Gazebo friction and material properties for back_caster -->
     <gazebo reference="back_caster">
-        <mu1 value="0.0"/>
-        <mu2 value="0.0"/>
-        <kp value="10000000.0" />
-        <kd value="100.0" />
+        <mu1 value="0.02"/>
+        <mu2 value="0.02"/>
+        <kp value="500000.0" />
+        <kd value="10.0" />
         <fdir1 value="0 0 1"/>
         <material>Gazebo/Gray</material>
     </gazebo>
