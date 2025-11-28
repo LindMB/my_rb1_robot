@@ -5,18 +5,24 @@ from math import pi, atan2
 from geometry_msgs.msg import Twist
 from nav_msgs.msg import Odometry
 
+REQ_ANGLE_THRESHOLD = 0.015
+
 class RotateRobot():
 
     def __init__(self):
 
         self.cmd = Twist()
         self.cmd_vel_pub = rospy.Publisher('/cmd_vel', Twist, queue_size=1)
-        self.rate = rospy.Rate(10)  # 10 messages par second
+        self.rate = rospy.Rate(20)  # 20 messages par second
         
         self.odom_sub = rospy.Subscriber('/odom', Odometry, self.odom_callback)
 
-        self.robot_yaw_z = 0.0
+        self.robot_yaw_z = 0.0        # Current rotation angle in z axis
         self.odom_ready = False
+
+        self.cumulative_yaw_z = 0.0   # Cumulative rotation angle since the beginning of the rotation
+        self.prev_yaw_z = None        # Last rotation angle received
+        self.req_ang_threshold = 0.015
 
         self.ctrl_c = False
         rospy.on_shutdown(self.shutdownhook)
@@ -49,9 +55,22 @@ class RotateRobot():
         return yaw
 
     def odom_callback(self, odom_msg):
+
         q = odom_msg.pose.pose.orientation
-        self.robot_yaw_z = self.quaternion_to_euler_yaw_z(q.x, q.y, q.z, q.w)
-        self.odom_ready = True
+        current_yaw_z = self.quaternion_to_euler_yaw_z(q.x, q.y, q.z, q.w)
+        self.robot_yaw_z = current_yaw_z
+        
+        # If at least 1 odomtery message has been received
+        if not self.odom_ready:
+            # Initialize variables for the last rotation angle and the cumulative one
+            self.prev_yaw_z = current_yaw_z
+            self.cumulative_yaw_z = 0.0
+            self.odom_ready = True
+        else:
+            # Compute the increment to know how much the whole rotation has increased
+            increment = self.normalize_angle(current_yaw_z - self.prev_yaw_z)
+            self.cumulative_yaw_z += increment
+            self.prev_yaw_z = current_yaw_z
 
     # Normalize angle 
     # <=> When the robot crossed the boundary (of the "ROS" circle) from [0, 180] to [-180, 0] and inversely.
@@ -86,15 +105,14 @@ class RotateRobot():
         rospy.loginfo("Rotating Robot!")
 
         # Rotate as long the requested angle is not reached
-        start_yaw_z = self.robot_yaw_z
+        start_cumulative_yaw_z = self.cumulative_yaw_z
         while not self.ctrl_c:
-        
-            current_yaw_z = self.robot_yaw_z
-            delta_yaw_z = self.normalize_angle(current_yaw_z - start_yaw_z)
-            rospy.logdebug("current_yaw_z = %.3f, delta_yaw_z = %.3f, req_yaw_z = %.3f" %
-                          (current_yaw_z, delta_yaw_z, requested_rotation_rad))
 
-            if abs(delta_yaw_z) >= abs(requested_rotation_rad):
+            delta_yaw_z = self.cumulative_yaw_z - start_cumulative_yaw_z
+            rospy.logdebug("cumulative_yaw_z = %.3f, delta_yaw_z = %.3f, req_yaw_z = %.3f" %
+                        (self.cumulative_yaw_z, delta_yaw_z, requested_rotation_rad))
+
+            if (abs(delta_yaw_z) >= ((abs(requested_rotation_rad) - self.req_ang_threshold ))) and (abs(delta_yaw_z) <= ((abs(requested_rotation_rad) + self.req_ang_threshold ))) :
                 rospy.loginfo("Requested angle reached!")
                 break
 
